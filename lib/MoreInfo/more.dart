@@ -8,6 +8,7 @@ class MorePage extends StatelessWidget {
   final String nativeName;
   final int area;
   final double population;
+  final String languages;
 
   const MorePage(
       {Key key,
@@ -15,7 +16,8 @@ class MorePage extends StatelessWidget {
       this.area,
       this.flag,
       this.name,
-      this.population})
+      this.population,
+      this.languages})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,14 @@ class MorePage extends StatelessWidget {
           ),
           Text(
             "Population Density:  ${population.toString()}",
+            style: GoogleFonts.montserrat(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "Official Languages:  ${languages}",
             style: GoogleFonts.montserrat(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),

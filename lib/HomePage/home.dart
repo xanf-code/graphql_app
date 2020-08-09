@@ -37,16 +37,19 @@ class _MyHomePageState extends State<MyHomePage> {
               documentNode: gql(r"""
                query{
                 	Country {
-                      name
-                      population
-                      capital
-                      flag{
-                        svgFile
-                      }
-                      populationDensity
-                      area
-                      nativeName
+                  name
+                  population
+                  capital
+                  flag{
+                    svgFile
                   }
+                  populationDensity
+                  area
+                  nativeName
+                  officialLanguages{
+                    name
+                  }
+                }
               }
                """),
             ),
@@ -63,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
               }
               List countries = result.data['Country'];
               return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: countries.length,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -70,13 +74,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Container(
                       color: Colors.white10,
                       width: MediaQuery.of(context).size.width,
-                      height: 200,
+                      height: 210,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 12.0, left: 12),
+                        padding: const EdgeInsets.only(left: 12),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              child: SvgPicture.network(
+                                  countries[index]['flag']['svgFile']),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Text(
                               "Country Name : ${countries[index]['name']}",
                               style: GoogleFonts.montserrat(
@@ -121,6 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       flag: countries[index]['flag']['svgFile'],
                                       population: countries[index]
                                           ['populationDensity'],
+                                      languages: countries[index]
+                                          ['officialLanguages'][0]['name'],
                                     ),
                                   ),
                                 );
