@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graphql_app/MoreInfo/more.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -24,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           elevation: 0,
-          title: Text("GraphQL"),
+          title: Text("Countries"),
           centerTitle: true,
         ),
         body: Container(
@@ -32,14 +36,17 @@ class _MyHomePageState extends State<MyHomePage> {
             options: QueryOptions(
               documentNode: gql(r"""
                query{
-                Country {
-                  name
-                  population
-                  capital
-                  flag{
-                    svgFile
-                   }
-                }
+                	Country {
+                      name
+                      population
+                      capital
+                      flag{
+                        svgFile
+                      }
+                      populationDensity
+                      area
+                      nativeName
+                  }
               }
                """),
             ),
@@ -102,7 +109,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             RaisedButton(
                               color: Colors.white,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => MorePage(
+                                      name: countries[index]['name'],
+                                      nativeName: countries[index]
+                                          ['nativeName'],
+                                      area: countries[index]['area'],
+                                      flag: countries[index]['flag']['svgFile'],
+                                      population: countries[index]
+                                          ['populationDensity'],
+                                    ),
+                                  ),
+                                );
+                              },
                               child: Text(
                                 "More Info",
                                 style:
